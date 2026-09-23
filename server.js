@@ -40,11 +40,9 @@ if (!GROQ_API_KEY) {
 // ==================================================
 
 app.get("/", (req, res) => {
-
     res.status(200).send(
         "Instagram AI Bot is running!"
     );
-
 });
 
 // ==================================================
@@ -65,16 +63,13 @@ app.get("/models", async (req, res) => {
         }
 
         const response = await axios.get(
-
             "https://api.groq.com/openai/v1/models",
-
             {
                 headers: {
                     "Authorization":
                         `Bearer ${GROQ_API_KEY}`
                 }
             }
-
         );
 
         const models =
@@ -88,11 +83,8 @@ app.get("/models", async (req, res) => {
             });
 
         res.json({
-
             success: true,
-
             models: models
-
         });
 
     } catch (error) {
@@ -104,15 +96,10 @@ app.get("/models", async (req, res) => {
         );
 
         res.status(500).json(
-
             error.response?.data || {
-
                 success: false,
-
                 error: error.message
-
             }
-
         );
 
     }
@@ -188,10 +175,6 @@ app.post("/webhook", async (req, res) => {
 
         const body = req.body;
 
-        // ------------------------------------------
-        // CHECK OBJECT
-        // ------------------------------------------
-
         if (body.object !== "instagram") {
 
             console.log(
@@ -201,10 +184,6 @@ app.post("/webhook", async (req, res) => {
             return;
 
         }
-
-        // ------------------------------------------
-        // CHECK ENTRY
-        // ------------------------------------------
 
         if (!body.entry) {
 
@@ -216,13 +195,7 @@ app.post("/webhook", async (req, res) => {
 
         }
 
-        // ------------------------------------------
-        // ENTRIES
-        // ------------------------------------------
-
-        for (
-            const entry of body.entry
-        ) {
+        for (const entry of body.entry) {
 
             if (!entry.changes) {
 
@@ -234,22 +207,12 @@ app.post("/webhook", async (req, res) => {
 
             }
 
-            // --------------------------------------
-            // CHANGES
-            // --------------------------------------
-
-            for (
-                const change of entry.changes
-            ) {
+            for (const change of entry.changes) {
 
                 console.log(
                     "Webhook field:",
                     change.field
                 );
-
-                // ----------------------------------
-                // ONLY MESSAGES
-                // ----------------------------------
 
                 if (
                     change.field !== "messages"
@@ -277,16 +240,8 @@ app.post("/webhook", async (req, res) => {
 
                 }
 
-                // ----------------------------------
-                // SENDER
-                // ----------------------------------
-
                 const senderId =
                     value.sender?.id;
-
-                // ----------------------------------
-                // MESSAGE
-                // ----------------------------------
 
                 const messageText =
                     value.message?.text;
@@ -301,10 +256,6 @@ app.post("/webhook", async (req, res) => {
                     messageText
                 );
 
-                // ----------------------------------
-                // CHECK SENDER
-                // ----------------------------------
-
                 if (!senderId) {
 
                     console.log(
@@ -314,10 +265,6 @@ app.post("/webhook", async (req, res) => {
                     continue;
 
                 }
-
-                // ----------------------------------
-                // CHECK MESSAGE
-                // ----------------------------------
 
                 if (!messageText) {
 
@@ -361,11 +308,8 @@ app.post("/webhook", async (req, res) => {
                 // ==================================
 
                 await sendInstagramReply(
-
                     senderId,
-
                     aiReply
-
                 );
 
             }
@@ -401,12 +345,9 @@ async function getAIReply(
 
                 {
 
-                    // Temporary model
-                    // /models se available model
-                    // check karenge
-
+                    // AVAILABLE GROQ MODEL
                     model:
-                        "llama-3.1-8b-instant",
+                        "openai/gpt-oss-20b",
 
                     messages: [
 
