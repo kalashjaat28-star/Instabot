@@ -1,0 +1,13 @@
+{
+  "name": "instabot",
+  "version": "1.0.0",
+  "description": "Instagram AI Auto-Reply Bot",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "axios": "^1.7.2"
+  }
+}
