@@ -438,3 +438,23 @@ app.listen(PORT, () => {
     console.log("================================");
 
 });
+app.get("/models", async (req, res) => {
+    try {
+        const response = await axios.get(
+            "https://api.groq.com/openai/v1/models",
+            {
+                headers: {
+                    Authorization: `Bearer ${GROQ_API_KEY}`
+                }
+            }
+        );
+
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json(
+            error.response?.data || {
+                error: error.message
+            }
+        );
+    }
+});
